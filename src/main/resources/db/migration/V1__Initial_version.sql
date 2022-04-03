@@ -3,7 +3,6 @@ CREATE TABLE role (
     name VARCHAR(30) UNIQUE NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    status VARCHAR(10) NOT NULL DEFAULT 'OK'
 );
 
 INSERT INTO role (id, name) VALUES (1, 'Admin');
@@ -16,7 +15,6 @@ CREATE TABLE permission (
     role_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
-    status VARCHAR(10) NOT NULL DEFAULT 'OK'
 );
 
 INSERT INTO permission (name, role_id) VALUES ('MANAGE_ACCOUNT', 1);
@@ -42,7 +40,6 @@ CREATE TABLE account_role (
     role_id INT NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
-    status VARCHAR(10) NOT NULL DEFAULT 'OK'
 );
 
 INSERT INTO account_role (account_id, role_id) VALUES (1, 1);
