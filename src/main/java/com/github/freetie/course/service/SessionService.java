@@ -9,9 +9,13 @@ import java.util.UUID;
 public class SessionService {
     SessionDao sessionDao;
 
-    public String createSession(Integer accountId) {
+    public String create(Integer accountId) {
         String token = UUID.randomUUID().toString();
         sessionDao.save(accountId, token);
         return token;
+    }
+
+    public void delete(String token) {
+        sessionDao.deleteByToken(token);
     }
 }
