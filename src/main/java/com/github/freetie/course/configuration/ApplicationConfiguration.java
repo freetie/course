@@ -24,6 +24,11 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
     SessionDao sessionDao;
     AccountDao accountDao;
 
+    public ApplicationConfiguration(SessionDao sessionDao, AccountDao accountDao) {
+        this.sessionDao = sessionDao;
+        this.accountDao = accountDao;
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

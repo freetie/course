@@ -19,8 +19,13 @@ public class SessionController {
     AccountService accountService;
     SessionService sessionService;
 
+    public SessionController(AccountService accountService, SessionService sessionService) {
+        this.accountService = accountService;
+        this.sessionService = sessionService;
+    }
+
     @GetMapping("/session")
-    public Account auth() {
+    public Account session() {
         Account currentAccount = ApplicationConfiguration.AccountContext.getCurrentAccount();
         if (currentAccount == null) {
             throw new HttpException(401, "Unauthorized");

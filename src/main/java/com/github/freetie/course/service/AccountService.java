@@ -12,7 +12,12 @@ public class AccountService {
     PasswordEncoder passwordEncoder;
     AccountDao accountDao;
 
-    public void save(String name, String password) {
+    public AccountService(PasswordEncoder passwordEncoder, AccountDao accountDao) {
+        this.passwordEncoder = passwordEncoder;
+        this.accountDao = accountDao;
+    }
+
+    public void create(String name, String password) {
         accountDao.save(name, passwordEncoder.encode(password));
     }
 
@@ -23,11 +28,11 @@ public class AccountService {
         return account;
     }
 
-    public List<Account> findAll(Integer page, Integer size, String nameKeyword) {
+    public List<Account> findAllStudent(Integer page, Integer size, String nameKeyword) {
         int offset = (page - 1) * size;
         if (nameKeyword == null) {
-            return accountDao.findAll(offset, size);
+            return accountDao.findAllStudent(offset, size);
         }
-        return accountDao.findAllByName(offset, size, nameKeyword);
+        return accountDao.findAllStudentByName(offset, size, nameKeyword);
     }
 }

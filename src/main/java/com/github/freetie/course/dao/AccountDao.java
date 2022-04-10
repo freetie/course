@@ -19,9 +19,9 @@ public interface AccountDao {
     @Select("SELECT * FROM account WHERE name = #{name}")
     Account findByName(@Param("name") String name);
 
-    @Select("SELECT * FROM account LIMIT #{offset},#{rowCount}")
-    List<Account> findAll(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount);
+    @Select("SELECT * FROM account WHERE status = 'OK' AND role = 'STUDENT' LIMIT #{offset},#{rowCount}")
+    List<Account> findAllStudent(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount);
 
-    @Select("SELECT * FROM account LIMIT #{offset},#{rowCount} WHERE name LIKE #{nameKeyword}")
-    List<Account> findAllByName(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount, @Param("nameKeyword") String nameKeyword);
+    @Select("SELECT * FROM account WHERE status = 'OK' AND role = 'STUDENT' AND name LIKE #{nameKeyword} LIMIT #{offset},#{rowCount}")
+    List<Account> findAllStudentByName(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount, @Param("nameKeyword") String nameKeyword);
 }

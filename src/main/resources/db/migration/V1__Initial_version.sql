@@ -1,53 +1,34 @@
-CREATE TABLE role (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(30) UNIQUE NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
-    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
-);
-
-INSERT INTO role (id, name) VALUES (1, 'Admin');
-INSERT INTO role (id, name) VALUES (2, 'Teacher');
-INSERT INTO role (id, name) VALUES (3, 'Student');
-
-CREATE TABLE permission (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(30) UNIQUE NOT NULL,
-    role_id INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP NOT NULL DEFAULT now(),
-);
-
-INSERT INTO permission (name, role_id) VALUES ('MANAGE_ACCOUNT', 1);
-INSERT INTO permission (name, role_id) VALUES ('UPLOAD_COURSE', 2);
-INSERT INTO permission (name, role_id) VALUES ('LOGIN', 3);
-
 CREATE TABLE account (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
+    role VARCHAR(10) NOT NULL DEFAULT 'STUDENT',
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now(),
     status VARCHAR(10) NOT NULL DEFAULT 'OK'
 );
 
-INSERT INTO account (id, name, password) VALUES (1, 'Admin1', '');
-INSERT INTO account (id, name, password) VALUES (2, 'Teacher1', '');
-INSERT INTO account (id, name, password) VALUES (3, 'Student1', '');
-
-CREATE TABLE account_role (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    account_id INT NOT NULL,
-    role_id INT NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT now(),
-    updated_at TIMESTAMP NOT NULL DEFAULT now(),
-);
-
-INSERT INTO account_role (account_id, role_id) VALUES (1, 1);
-INSERT INTO account_role (account_id, role_id) VALUES (2, 2);
-INSERT INTO account_role (account_id, role_id) VALUES (3, 3);
+INSERT INTO account (id, name, password, role) VALUES (1, 'Admin1', '$2a$10$sMx.OzjwW6ZWMTmxQYtYkOZCx1nMUpDfUyRom1IdCAmdqLJDKQeaq', 'ADMIN');
+INSERT INTO account (id, name, password, role) VALUES (2, 'Teacher1', '$2a$10$Y9EjLKR2XDC.GKF6zlGd8.XzENRI8qxXOwnDQFikBocftCN/jjw3O', 'TEACHER');
+INSERT INTO account (id, name, password) VALUES (3, 'Student1', '$2a$10$KZL0BMu8/vG73kGd2cjF5exUqHWPYgO7RDGy.PYgQXTmji3eeMddW');
 
 CREATE TABLE session (
     id INT PRIMARY KEY AUTO_INCREMENT,
     account_id INT NOT NULL,
-    token VARCHAR(100) UNIQUE NOT NULL,
+    token VARCHAR(100) UNIQUE NOT NULL
+);
+
+CREATE TABLE course (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR(30) UNIQUE NOT NULL,
+    `desc` VARCHAR(200),
+    picture VARCHAR(300),
+    price INT NOT NULL
+);
+
+CREATE TABLE video (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    `index` INT NOT NULL,
+    title VARCHAR(30) UNIQUE NOT NULL,
+    url VARCHAR(300) NOT NULL
 );
