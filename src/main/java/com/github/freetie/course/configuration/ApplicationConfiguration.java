@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,6 +30,14 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         this.accountDao = accountDao;
     }
 
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE")
+                .allowCredentials(true);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -43,7 +52,11 @@ public class ApplicationConfiguration implements WebMvcConfigurer {
         private static final ThreadLocal<Account> currentAccount = new ThreadLocal<>();
 
         public static Optional<String> getCookieToken(HttpServletRequest request) {
-            return Stream.of(request.getCookies()).filter(cookie -> cookie.getName().equals(COOKIE_TOKEN_NAME)).map(Cookie::getValue).findFirst();
+            Cookie[] cookies = request.getCookies();
+            if (cookies == null) {
+                return Optional.empty();
+            }
+            return Stream.of(cookies).filter(cookie -> cookie.getName().equals(COOKIE_TOKEN_NAME)).map(Cookie::getValue).findFirst();
         }
 
         public static Account getCurrentAccount() {

@@ -11,13 +11,21 @@ enum Status {
 
 public class Account {
     private Integer id;
-    private String name;
+    private String username;
     @JsonIgnore
     private String password;
     private Role role;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Status status;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Role getRole() {
         return role;
@@ -57,14 +65,6 @@ public class Account {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {

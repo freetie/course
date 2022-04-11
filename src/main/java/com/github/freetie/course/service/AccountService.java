@@ -17,22 +17,33 @@ public class AccountService {
         this.accountDao = accountDao;
     }
 
-    public void create(String name, String password) {
-        accountDao.save(name, passwordEncoder.encode(password));
+    public void create(String username, String password) {
+        accountDao.save(username, passwordEncoder.encode(password));
     }
 
-    public Account findByNameAndPassword(String name, String password) {
-        Account account = accountDao.findByName(name);
+    public Account findByNameAndPassword(String username, String password) {
+        Account account = accountDao.findByUsername(username);
         if (account == null) return null;
         if (!passwordEncoder.matches(password, account.getPassword())) return null;
         return account;
     }
 
-    public List<Account> findAllStudent(Integer page, Integer size, String nameKeyword) {
+    public Integer countStudent(String username) {
+        if (username == null || username.equals("")) {
+            return accountDao.countStudent();
+        }
+        return accountDao.countStudentByUsername("%" + username + "%");
+    }
+
+    public List<Account> findAllStudent(Integer page, Integer size, String username) {
         int offset = (page - 1) * size;
-        if (nameKeyword == null) {
+        if (username == null || username.equals("")) {
             return accountDao.findAllStudent(offset, size);
         }
-        return accountDao.findAllStudentByName(offset, size, nameKeyword);
+        return accountDao.findAllStudentByUsername(offset, size, "%" + username + "%");
+    }
+
+    public void deleteAccount(Integer id) {
+        accountDao.deleteById(id);
     }
 }

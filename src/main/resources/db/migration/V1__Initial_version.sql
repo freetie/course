@@ -1,6 +1,6 @@
 CREATE TABLE account (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(30) UNIQUE NOT NULL,
+    username VARCHAR(30) UNIQUE NOT NULL,
     password VARCHAR(60) NOT NULL,
     role VARCHAR(10) NOT NULL DEFAULT 'STUDENT',
     created_at TIMESTAMP NOT NULL DEFAULT now(),
@@ -8,9 +8,9 @@ CREATE TABLE account (
     status VARCHAR(10) NOT NULL DEFAULT 'OK'
 );
 
-INSERT INTO account (id, name, password, role) VALUES (1, 'Admin1', '$2a$10$sMx.OzjwW6ZWMTmxQYtYkOZCx1nMUpDfUyRom1IdCAmdqLJDKQeaq', 'ADMIN');
-INSERT INTO account (id, name, password, role) VALUES (2, 'Teacher1', '$2a$10$Y9EjLKR2XDC.GKF6zlGd8.XzENRI8qxXOwnDQFikBocftCN/jjw3O', 'TEACHER');
-INSERT INTO account (id, name, password) VALUES (3, 'Student1', '$2a$10$KZL0BMu8/vG73kGd2cjF5exUqHWPYgO7RDGy.PYgQXTmji3eeMddW');
+INSERT INTO account (id, username, password, role) VALUES (1, 'Admin1', '$2a$10$sMx.OzjwW6ZWMTmxQYtYkOZCx1nMUpDfUyRom1IdCAmdqLJDKQeaq', 'ADMIN');
+INSERT INTO account (id, username, password, role) VALUES (2, 'Teacher1', '$2a$10$Y9EjLKR2XDC.GKF6zlGd8.XzENRI8qxXOwnDQFikBocftCN/jjw3O', 'TEACHER');
+INSERT INTO account (id, username, password) VALUES (3, 'Student1', '$2a$10$KZL0BMu8/vG73kGd2cjF5exUqHWPYgO7RDGy.PYgQXTmji3eeMddW');
 
 CREATE TABLE session (
     id INT PRIMARY KEY AUTO_INCREMENT,

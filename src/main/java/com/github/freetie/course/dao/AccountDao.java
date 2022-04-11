@@ -1,27 +1,33 @@
 package com.github.freetie.course.dao;
 
 import com.github.freetie.course.entity.Account;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
 @Mapper
 public interface AccountDao {
-    @Insert("INSERT INTO account (name, password) VALUES (#{name}, #{password})")
-    void save(@Param("name") String name, @Param("password") String password);
+    @Insert("INSERT INTO account (username, password) VALUES (#{username}, #{password})")
+    void save(@Param("username") String username, @Param("password") String password);
 
     @Select("SELECT * FROM account WHERE id = #{id}")
     Account findById(@Param("id") Integer id);
 
-    @Select("SELECT * FROM account WHERE name = #{name}")
-    Account findByName(@Param("name") String name);
+    @Select("SELECT * FROM account WHERE username = #{username}")
+    Account findByUsername(@Param("username") String username);
 
     @Select("SELECT * FROM account WHERE status = 'OK' AND role = 'STUDENT' LIMIT #{offset},#{rowCount}")
     List<Account> findAllStudent(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount);
 
-    @Select("SELECT * FROM account WHERE status = 'OK' AND role = 'STUDENT' AND name LIKE #{nameKeyword} LIMIT #{offset},#{rowCount}")
-    List<Account> findAllStudentByName(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount, @Param("nameKeyword") String nameKeyword);
+    @Select("SELECT * FROM account WHERE status = 'OK' AND role = 'STUDENT' AND username LIKE #{username} LIMIT #{offset},#{rowCount}")
+    List<Account> findAllStudentByUsername(@Param("offset") Integer offset, @Param("rowCount") Integer rowCount, @Param("username") String username);
+
+    @Select("SELECT COUNT(*) FROM account WHERE status = 'OK' AND role = 'STUDENT'")
+    Integer countStudent();
+
+    @Select("SELECT COUNT(*) FROM account WHERE status = 'OK' AND role = 'STUDENT' AND username LIKE #{username}")
+    Integer countStudentByUsername(@Param("username") String username);
+
+    @Delete("DELETE FROM account WHERE id = #{id}")
+    void deleteById(@Param("id") Integer id);
 }
