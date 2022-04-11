@@ -15,7 +15,8 @@ INSERT INTO account (id, username, password) VALUES (3, 'Student1', '$2a$10$KZL0
 CREATE TABLE session (
     id INT PRIMARY KEY AUTO_INCREMENT,
     account_id INT NOT NULL,
-    token VARCHAR(100) UNIQUE NOT NULL
+    token VARCHAR(100) UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 CREATE TABLE course (
@@ -23,12 +24,23 @@ CREATE TABLE course (
     title VARCHAR(30) UNIQUE NOT NULL,
     `desc` VARCHAR(200),
     picture VARCHAR(300),
-    price INT NOT NULL
+    price INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
 CREATE TABLE video (
     id INT PRIMARY KEY AUTO_INCREMENT,
     `index` INT NOT NULL,
     title VARCHAR(30) UNIQUE NOT NULL,
-    url VARCHAR(300) NOT NULL
+    url VARCHAR(300) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT now(),
+    updated_at TIMESTAMP NOT NULL DEFAULT now()
+);
+
+CREATE TABLE course_order (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    account_id INT NOT NULL,
+    course_id  INT NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT now()
 );
