@@ -29,6 +29,10 @@ CREATE TABLE course (
     updated_at TIMESTAMP NOT NULL DEFAULT now()
 );
 
+INSERT INTO course (id, title, `desc`, picture, price) VALUES (1, 'HTML & CSS', 'Webページの見た目をつくる言語', 'https://ddb6ltykpq547.cloudfront.net/language/1/icon_for_web/2157d1e7aa48b6d370b46ad6c2c71732', 78);
+INSERT INTO course (id, title, `desc`, picture, price) VALUES (2, 'JavaScript', '多様な可能性を秘めたフロントエンド言語', 'https://ddb6ltykpq547.cloudfront.net/language/26/icon_for_web/b91f687669df25708bdd41dc1ebc0082', 120);
+INSERT INTO course (id, title, `desc`, picture, price) VALUES (3, 'Java', '大規模開発からモバイルアプリまで、汎用的なプログラミング言語', 'https://ddb6ltykpq547.cloudfront.net/language/7/icon_for_web/215b012918da862620380f1388e813a0', 400);
+
 CREATE TABLE video (
     id INT PRIMARY KEY AUTO_INCREMENT,
     `index` INT NOT NULL,

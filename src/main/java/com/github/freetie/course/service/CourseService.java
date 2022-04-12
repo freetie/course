@@ -10,6 +10,10 @@ import java.util.List;
 public class CourseService {
     CourseDao courseDao;
 
+    public CourseService(CourseDao courseDao) {
+        this.courseDao = courseDao;
+    }
+
     public void create(Course course) {
         courseDao.save(course);
     }

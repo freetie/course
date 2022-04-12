@@ -10,6 +10,10 @@ import java.util.List;
 public class CourseController {
     CourseService courseService;
 
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
+    }
+
     @GetMapping("/course")
     public List<Course> queryCourses() {
         return courseService.findAll();
