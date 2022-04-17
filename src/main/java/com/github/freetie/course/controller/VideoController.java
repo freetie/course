@@ -52,40 +52,23 @@ public class VideoController {
 
     @GetMapping("/course/{id}/video")
     public List<Video> getVideos(@PathVariable("id") Integer courseId) {
-        return videoService.queryVideosByCourseId(courseId);
+        return videoService.getByCourseId(courseId);
     }
 
     @GetMapping("/video/{id}/url")
     public URL getVideoUrl(@PathVariable("id") Integer videoId) {
-        // Endpoint以华东1（杭州）为例，其它Region请按实际情况填写。
-        String endpoint = "https://oss-cn-hangzhou.aliyuncs.com";
-        // 阿里云账号AccessKey拥有所有API的访问权限，风险很高。强烈建议您创建并使用RAM用户进行API访问或日常运维，请登录RAM控制台创建RAM用户。
-        String accessKeyId = "yourAccessKeyId";
-        String accessKeySecret = "yourAccessKeySecret";
-        // 从STS服务获取的安全令牌（SecurityToken）。
-        String securityToken = "yourSecurityToken";
-        // 填写Bucket名称，例如examplebucket。
-        String bucketName = "examplebucket";
-        // 填写Object完整路径，例如exampleobject.txt。Object完整路径中不能包含Bucket名称。
-        String objectName = "exampleobject.txt";
-
-        // 从STS服务获取临时访问凭证后，您可以通过临时访问密钥和安全令牌生成OSSClient。
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret, securityToken);
+        Video video = videoService.getById(videoId);
+        OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         Date expiration = new Date(new Date().getTime() + 3600 * 1000);
         // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
-        return ossClient.generatePresignedUrl(bucketName, objectName, expiration);
+        return ossClient.generatePresignedUrl(BUCKET, video.getPath(), expiration);
     }
 
     @GetMapping("/course/{courseId}/signature")
     public VideoUploadSignature getUploadSignature(@PathVariable("courseId") Integer courseId) {
-        String accessId = ACCESS_KEY_ID; // 请填写您的AccessKeyId。
-        String accessKey = ACCESS_KEY_SECRET; // 请填写您的AccessKeySecret。
-        String endpoint = ENDPOINT; // 请填写您的 endpoint。
-        String bucket = BUCKET; // 请填写您的 bucketname 。
-        String host = "http://" + bucket + "." + endpoint; // host的格式为 bucketname.endpoint
+        String host = "http://" + BUCKET + "." + ENDPOINT; // host的格式为 bucketname.endpoint
         String dir = "course-" + courseId + "/"; // 用户上传文件时指定的前缀。
-        OSSClient client = new OSSClient(endpoint, new DefaultCredentialProvider(accessId, accessKey), null);
+        OSSClient client = new OSSClient(ENDPOINT, new DefaultCredentialProvider(ACCESS_KEY_ID, ACCESS_KEY_SECRET), null);
         long expireTime = 30;
         long expireEndTime = System.currentTimeMillis() + expireTime * 1000;
         Date expiration = new Date(expireEndTime);
@@ -99,7 +82,7 @@ public class VideoController {
         String postSignature = client.calculatePostSignature(postPolicy);
 
         VideoUploadSignature signature = new VideoUploadSignature();
-        signature.setAccessid(accessId);
+        signature.setAccessid(ACCESS_KEY_ID);
         signature.setPolicy(encodedPolicy);
         signature.setSignature(postSignature);
         signature.setDir(dir);

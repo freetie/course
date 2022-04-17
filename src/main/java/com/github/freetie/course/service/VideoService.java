@@ -18,8 +18,12 @@ public class VideoService {
         videoDao.save(video);
     }
 
-    public List<Video> queryVideosByCourseId(Integer courseId) {
+    public List<Video> getByCourseId(Integer courseId) {
         return videoDao.findByCourseId(courseId);
+    }
+
+    public Video getById(Integer id) {
+        return videoDao.findById(id);
     }
 
     public void changeIndex(Integer courseId, Integer videoId, String direction) {
