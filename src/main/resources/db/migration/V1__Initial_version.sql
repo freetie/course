@@ -35,9 +35,10 @@ INSERT INTO course (id, title, `desc`, picture, price) VALUES (3, 'Java', 'å¤§è¦
 
 CREATE TABLE video (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    course_id INT NOT NULL,
     `index` INT NOT NULL,
     title VARCHAR(30) UNIQUE NOT NULL,
-    url VARCHAR(300) NOT NULL,
+    path VARCHAR(300) NOT NULL,
     created_at TIMESTAMP NOT NULL DEFAULT now(),
     updated_at TIMESTAMP NOT NULL DEFAULT now()
 );

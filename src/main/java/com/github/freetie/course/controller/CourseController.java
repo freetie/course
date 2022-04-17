@@ -24,8 +24,9 @@ public class CourseController {
         courseService.create(course);
     }
 
-    @PutMapping("/course")
-    public void updateCourse(@RequestBody Course course) {
+    @PutMapping("/course/{id}")
+    public void updateCourse(@PathVariable("id") Integer id, @RequestBody Course course) {
+        course.setId(id);
         courseService.update(course);
     }
 }
