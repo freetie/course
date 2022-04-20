@@ -7,6 +7,8 @@ import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.common.utils.BinaryUtil;
 import com.aliyun.oss.model.MatchMode;
 import com.aliyun.oss.model.PolicyConditions;
+import com.github.freetie.course.annotation.RoleControl;
+import com.github.freetie.course.entity.Role;
 import com.github.freetie.course.entity.Video;
 import com.github.freetie.course.service.VideoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,12 +37,14 @@ public class VideoController {
         this.videoService = videoService;
     }
 
+    @RoleControl(Role.TEACHER)
     @PostMapping("/course/{id}/video")
     public void addVideo(@PathVariable("id") Integer courseId, @RequestBody Video video) {
         video.setCourseId(courseId);
         videoService.create(video);
     }
 
+    @RoleControl(Role.TEACHER)
     @PatchMapping("/course/{courseId}/video/{videoId}/index")
     public void changeIndex(
             @PathVariable("courseId") Integer courseId,
@@ -64,6 +68,7 @@ public class VideoController {
         return ossClient.generatePresignedUrl(BUCKET, video.getPath(), expiration);
     }
 
+    @RoleControl(Role.TEACHER)
     @GetMapping("/course/{courseId}/signature")
     public VideoUploadSignature getUploadSignature(@PathVariable("courseId") Integer courseId) {
         String host = "http://" + BUCKET + "." + ENDPOINT; // host的格式为 bucketname.endpoint

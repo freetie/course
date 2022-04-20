@@ -7,5 +7,5 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RoleControl {
-    Role role() default Role.ADMIN;
+    Role value() default Role.ADMIN;
 }

@@ -7,16 +7,17 @@ import com.github.freetie.course.entity.HttpException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
 @Aspect
-//@Configuration
+@Component
 public class PermissionAspect {
-    @Around("@annotation(com.github.freetie.course.annotation.RoleControl)")
+    @Around("@annotation(roleControl)")
     public Object checkRole(ProceedingJoinPoint joinPoint, RoleControl roleControl) throws Throwable {
         Account currentAccount = ApplicationConfiguration.AccountContext.getCurrentAccount();
-        if (currentAccount.getRole().equals(roleControl.role())) {
-            return joinPoint.proceed();
+        if (currentAccount == null || !currentAccount.getRole().equals(roleControl.value())) {
+            throw new HttpException(403, "Forbidden");
         }
-        throw new HttpException(403, "Forbidden");
+        return joinPoint.proceed();
     }
 }
