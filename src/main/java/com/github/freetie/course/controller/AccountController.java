@@ -8,6 +8,7 @@ import com.github.freetie.course.entity.Role;
 import com.github.freetie.course.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -34,10 +35,11 @@ public class AccountController {
 
     @RoleControl(Role.ADMIN)
     @PostMapping("/account")
-    public void signup(@RequestBody Map<String, String> usernameAndPassword) {
+    public void signup(HttpServletResponse response, @RequestBody Map<String, String> usernameAndPassword) {
         String username = usernameAndPassword.get("username");
         String password = usernameAndPassword.get("password");
         accountService.create(username, password);
+        response.setStatus(201);
     }
 
     @RoleControl(Role.ADMIN)
