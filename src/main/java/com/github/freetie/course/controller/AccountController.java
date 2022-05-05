@@ -3,7 +3,6 @@ package com.github.freetie.course.controller;
 import com.github.freetie.course.annotation.RoleControl;
 import com.github.freetie.course.entity.Account;
 import com.github.freetie.course.entity.PaginatedResult;
-import com.github.freetie.course.entity.Result;
 import com.github.freetie.course.entity.Role;
 import com.github.freetie.course.service.AccountService;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,6 @@ public class AccountController {
         return paginatedResult;
     }
 
-    @RoleControl(Role.ADMIN)
     @PostMapping("/account")
     public void signup(HttpServletResponse response, @RequestBody Map<String, String> usernameAndPassword) {
         String username = usernameAndPassword.get("username");
