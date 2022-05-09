@@ -28,6 +28,6 @@ public interface AccountDao {
     @Select("SELECT COUNT(*) FROM account WHERE status = 'OK' AND role = 'STUDENT' AND username LIKE #{username}")
     Integer countStudentByUsername(@Param("username") String username);
 
-    @Delete("DELETE FROM account WHERE id = #{id}")
+    @Delete("UPDATE account SET status = 'DELETED' WHERE id = #{id}")
     void deleteById(@Param("id") Integer id);
 }

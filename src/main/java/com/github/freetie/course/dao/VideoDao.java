@@ -10,6 +10,12 @@ public interface VideoDao {
     @Insert("INSERT INTO video (course_id, `index`, title, path) VALUES (#{courseId}, #{index}, #{title}, #{path})")
     void save(Video video);
 
+    @Delete("DELETE FROM video WHERE id=#{id}")
+    void deleteById(@Param("id") Integer id);
+
+    @Delete("DELETE FROM video WHERE course_id=#{courseId}")
+    void deleteByCourseId(@Param("courseId") Integer courseId);
+
     @Select("SELECT * FROM video WHERE course_id=#{courseId} ORDER BY `index`")
     List<Video> findByCourseId(@Param("courseId") Integer courseId);
 

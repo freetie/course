@@ -14,6 +14,7 @@ import com.github.freetie.course.service.VideoService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
@@ -45,6 +46,25 @@ public class VideoController {
     }
 
     @RoleControl(Role.TEACHER)
+    @DeleteMapping("course/{courseId}/video/{videoId}")
+    public void deleteVideo(
+            HttpServletResponse response,
+            @PathVariable("courseId") Integer courseId,
+            @PathVariable("videoId") Integer videoId
+    ) {
+        Video video = videoService.getById(videoId);
+        OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
+        ossClient.deleteObject(BUCKET, video.getPath());
+        ossClient.shutdown();
+        Video nextVideo = videoService.getByCourseIdAndIndex(courseId, video.getIndex() + 1);
+        if (nextVideo != null) {
+            videoService.changeIndex(courseId, nextVideo.getId(), "forward");
+        }
+        videoService.deleteById(videoId);
+        response.setStatus(202);
+    }
+
+    @RoleControl(Role.TEACHER)
     @PatchMapping("/course/{courseId}/video/{videoId}/index")
     public void changeIndex(
             @PathVariable("courseId") Integer courseId,
@@ -65,7 +85,9 @@ public class VideoController {
         OSS ossClient = new OSSClientBuilder().build(ENDPOINT, ACCESS_KEY_ID, ACCESS_KEY_SECRET);
         Date expiration = new Date(new Date().getTime() + 3600 * 1000);
         // 生成以GET方法访问的签名URL，访客可以直接通过浏览器访问相关内容。
-        return ossClient.generatePresignedUrl(BUCKET, video.getPath(), expiration);
+        URL url = ossClient.generatePresignedUrl(BUCKET, video.getPath(), expiration);
+        ossClient.shutdown();
+        return url;
     }
 
     @RoleControl(Role.TEACHER)
@@ -85,6 +107,7 @@ public class VideoController {
         byte[] binaryData = postPolicy.getBytes(StandardCharsets.UTF_8);
         String encodedPolicy = BinaryUtil.toBase64String(binaryData);
         String postSignature = client.calculatePostSignature(postPolicy);
+        client.shutdown();
 
         VideoUploadSignature signature = new VideoUploadSignature();
         signature.setAccessid(ACCESS_KEY_ID);

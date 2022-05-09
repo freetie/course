@@ -18,6 +18,14 @@ public class VideoService {
         videoDao.save(video);
     }
 
+    public void deleteById(Integer videoId) {
+        videoDao.deleteById(videoId);
+    }
+
+    public void deleteByCourseId(Integer courseId) {
+        videoDao.deleteByCourseId(courseId);
+    }
+
     public List<Video> getByCourseId(Integer courseId) {
         return videoDao.findByCourseId(courseId);
     }
@@ -26,6 +34,9 @@ public class VideoService {
         return videoDao.findById(id);
     }
 
+    public Video getByCourseIdAndIndex(Integer courseId, Integer index) {
+        return videoDao.findByCourseIdAndIndex(courseId, index);
+    }
     public void changeIndex(Integer courseId, Integer videoId, String direction) {
         Video targetVideo = videoDao.findById(videoId);
         Video videoSwapped = videoDao.findByCourseIdAndIndex(courseId, direction.equals("forward") ? targetVideo.getIndex() - 1 : targetVideo.getIndex() + 1);
